@@ -1,49 +1,25 @@
-import {
-	Box,
-	Text,
-	Button,
-	Modal,
-	ModalOverlay,
-	ModalContent,
-	ModalHeader,
-	ModalFooter,
-	ModalBody,
-	ModalCloseButton,
-	useDisclosure,
-} from "@chakra-ui/react";
+import { Flex, Text, Button } from "@chakra-ui/react";
+import Link from "next/link";
 import Layout from "../components/layout";
-
-function PromptAction() {
-	const { isOpen, onOpen, onClose } = useDisclosure();
-
-	return (
-		<>
-			<Button onClick={onOpen}>Trigger modal</Button>
-
-			<Modal onClose={onClose} isOpen={isOpen} isCentered>
-				<ModalOverlay />
-				<ModalContent>
-					<ModalHeader>Modal Title</ModalHeader>
-					<ModalCloseButton />
-					<ModalBody>
-						<Text>lol</Text>
-					</ModalBody>
-					<ModalFooter>
-						<Button onClick={onClose}>Close</Button>
-					</ModalFooter>
-				</ModalContent>
-			</Modal>
-		</>
-	);
-}
 
 export default function Home() {
 	return (
 		<Layout>
-			<Box textAlign="left" fontSize="xl" px={8}>
-				<Text my={7}>Welcome to VANAGRAMS!</Text>
-				{PromptAction()}
-			</Box>
+			<Flex
+				alignItems="center"
+				justifyContent="center"
+				textAlign="center"
+				flexDir="column"
+				fontSize="xl"
+				gap="1rem"
+				h="100%"
+				px={8}>
+				<Text>Welcome to VANAGRAMS!</Text>
+				<Link href="/singleplayer">
+					<Button w="8rem">Singleplayer</Button>
+				</Link>
+				<Button w="8rem">Multiplayer</Button>
+			</Flex>
 		</Layout>
 	);
 }

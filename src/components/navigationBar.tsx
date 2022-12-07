@@ -14,20 +14,24 @@ export default function NavigationBar() {
 	const { colorMode, toggleColorMode } = useColorMode();
 
 	return (
-		<Box bg={useColorModeValue("gray.100", "gray.900")} px={8} py={4}>
+		<Box
+			bg={useColorModeValue("gray.100", "gray.900")}
+			px={8}
+			py={4}
+			w="100%">
 			<Flex alignItems="center" justifyContent="space-between">
 				<Link href="/">
-					<Image w={10} alt="steak" src="steak.svg" />
+					<Image w={8} alt="steak" src="steak.svg" />
 				</Link>
 				<Heading
-					py={5}
+					py={1}
 					display="inline-block"
-					fontSize="20px"
+					fontSize="30px"
 					bgGradient="linear(to-r, red.300, red.500)"
 					backgroundClip="text">
 					Vanagrams
 				</Heading>
-				<Button onClick={toggleColorMode}>
+				<Button onClick={toggleColorMode} w={8}>
 					{colorMode === "light" ? <MoonIcon /> : <SunIcon />}
 				</Button>
 			</Flex>
