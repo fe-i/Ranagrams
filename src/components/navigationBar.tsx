@@ -10,7 +10,7 @@ import {
 } from "@chakra-ui/react";
 import { MoonIcon, SunIcon } from "@chakra-ui/icons";
 
-export default function NavigationBar() {
+const NavigationBar: React.FC = () => {
 	const { colorMode, toggleColorMode } = useColorMode();
 
 	return (
@@ -37,4 +37,6 @@ export default function NavigationBar() {
 			</Flex>
 		</Box>
 	);
-}
+};
+
+export default NavigationBar;

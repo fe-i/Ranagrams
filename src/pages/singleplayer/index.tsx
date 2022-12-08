@@ -1,7 +1,8 @@
-import { Box, Button } from "@chakra-ui/react";
+import { Flex, Text, Button, Box, HStack } from "@chakra-ui/react";
 import { NextPage } from "next";
 import { useEffect } from "react";
 import Layout from "../../components/layout";
+import LetterBox from "../../components/letterBox";
 import useIsWord from "../../hooks/useIsWord";
 import useRandomWord from "../../hooks/useRandomWord";
 
@@ -11,10 +12,26 @@ const About: NextPage = () => {
 	useEffect(() => {
 		getRandomWord();
 	}, []);
+
+	const inputArray = new Array(6).fill("");
+	const letterArray = randomWord.split("");
+
 	return (
 		<Layout title="Singleplayer">
-			<Box textAlign="center" py={10} px={6}>
-				Here
+			<Flex
+				alignItems="center"
+				justifyContent="center"
+				textAlign="center"
+				flexDir="column"
+				fontSize="xl"
+				gap="1rem"
+				h="100%"
+				px={8}>
+				<HStack>
+					{inputArray.map((_, i) => (
+						<LetterBox key={i} letter={inputArray[i]} />
+					))}
+				</HStack>
 				<Button
 					onClick={async () => {
 						const result = await isWord("heqwwwllo");
@@ -30,7 +47,12 @@ const About: NextPage = () => {
 					}}>
 					test
 				</Button>
-			</Box>
+				<HStack>
+					{letterArray.map((_, i) => (
+						<LetterBox key={i} letter={letterArray[i]} />
+					))}
+				</HStack>
+			</Flex>
 		</Layout>
 	);
 };
