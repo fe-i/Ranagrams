@@ -1,4 +1,4 @@
-import { Flex, Text, Button, Box, HStack } from "@chakra-ui/react";
+import { Flex, Text, Button, HStack } from "@chakra-ui/react";
 import { NextPage } from "next";
 import { useEffect, useState } from "react";
 import Layout from "../../components/layout";
@@ -13,6 +13,7 @@ const About: NextPage = () => {
 		getRandomWord();
 	}, []);
 
+	const [points, setPoints] = useState(0);
 	const [inputArray, setInputArray] = useState(new Array(6).fill(""));
 	const [ltrArray, setLtrArray] = useState(randomWord.split(""));
 
@@ -27,6 +28,7 @@ const About: NextPage = () => {
 				gap="1rem"
 				h="100%"
 				px={8}>
+				<Text>points: {points}</Text>
 				<HStack>
 					{inputArray.map((_, i) => (
 						<LetterBox
@@ -42,10 +44,18 @@ const About: NextPage = () => {
 					))}
 				</HStack>
 				<Button
+					disabled={inputArray.join("").length < 3}
 					onClick={async () => {
-						console.log(randomWord);
-						const result = await isWord(randomWord);
-						console.log(result);
+						const finalWord = inputArray.join("");
+						const result = await isWord(finalWord);
+						result
+							? setPoints(
+									points +
+										50 * Math.pow(2, finalWord.length - 3)
+							  )
+							: null;
+						setInputArray(new Array(6).fill(""));
+						setLtrArray(randomWord.split(""));
 					}}>
 					Submit
 				</Button>
