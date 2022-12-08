@@ -1,10 +1,19 @@
-import { Box } from "@chakra-ui/react";
+import { Button } from "@chakra-ui/react";
 
-const LetterBox: React.FC<{ letter: string }> = ({ letter }) => {
+const LetterBox: React.FC<{ letter: string; onClick: any }> = ({
+	letter,
+	onClick,
+}) => {
 	return (
-		<Box border="2px solid black" borderRadius="xl" w="6rem" h="6rem">
+		<Button
+			border="2px solid black"
+			borderRadius="xl"
+			w="6rem"
+			h="6rem"
+			disabled={letter === ""}
+			onClick={onClick}>
 			{letter}
-		</Box>
+		</Button>
 	);
 };
 
