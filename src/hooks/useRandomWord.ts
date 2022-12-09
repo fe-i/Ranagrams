@@ -9,7 +9,14 @@ const useRandomWord = () => {
 			.then((response) => response.json())
 			.then(async (data) => {
 				(await isWord(data[0]))
-					? setRandomWord(data[0])
+					? setRandomWord(
+							data[0]
+								.split("")
+								.sort(function () {
+									return 0.5 - Math.random();
+								})
+								.join("")
+					  )
 					: getRandomWord();
 			});
 	};

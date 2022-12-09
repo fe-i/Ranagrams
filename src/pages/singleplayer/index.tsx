@@ -15,7 +15,7 @@ const About: NextPage = () => {
 
 	const [points, setPoints] = useState(0);
 	const [inputArray, setInputArray] = useState(new Array(6).fill(""));
-	const [ltrArray, setLtrArray] = useState(randomWord.split(""));
+	const [letterArray, setLetterArray] = useState(randomWord.split(""));
 
 	return (
 		<Layout title="Singleplayer">
@@ -28,52 +28,78 @@ const About: NextPage = () => {
 				gap="1rem"
 				h="100%"
 				px={8}>
-				<Text>points: {points}</Text>
+				<Text>Points: {points}</Text>
 				<HStack>
 					{inputArray.map((_, i) => (
 						<LetterBox
 							key={i}
 							letter={inputArray[i]}
 							disabled={inputArray[i] === ""}
-							onClick={() => {
-								ltrArray[ltrArray.indexOf("")] = inputArray[i];
-								inputArray[i] = "";
-								setInputArray(inputArray);
-								setLtrArray(ltrArray);
+							onClick={async () => {
+								await setInputArray((prev) => {
+									const temp = prev.slice();
+									temp.splice(i, 1);
+									return [...temp, ""];
+								});
+								await setLetterArray((prev) => {
+									const temp = prev.slice();
+									temp[temp.indexOf("")] = inputArray[i];
+									return temp;
+								});
 							}}
 						/>
 					))}
 				</HStack>
-				<Button
-					disabled={inputArray.join("").length < 3}
-					onClick={async () => {
-						const finalWord = inputArray.join("");
-						const result = await isWord(finalWord);
-						result
-							? setPoints(
-									points +
-										50 * Math.pow(2, finalWord.length - 3)
-							  )
-							: null;
-						setInputArray(new Array(6).fill(""));
-						setLtrArray(randomWord.split(""));
-					}}>
-					Submit
-				</Button>
 				<HStack>
-					{ltrArray.map((_, i) => (
+					<Button
+						disabled={inputArray.join("").length < 3}
+						onClick={async () => {
+							const finalWord = inputArray.join("");
+							const result = await isWord(finalWord);
+							result
+								? setPoints(
+										points +
+											100 *
+												Math.pow(
+													2,
+													finalWord.length - 3
+												)
+								  )
+								: null;
+							setInputArray(() => new Array(6).fill(""));
+							setLetterArray(() => randomWord.split(""));
+						}}>
+						Submit
+					</Button>
+					<Button
+						onClick={async () => {
+							setInputArray(() => new Array(6).fill(""));
+							setLetterArray(() =>
+								randomWord.split("").sort(function () {
+									return 0.5 - Math.random();
+								})
+							);
+						}}>
+						Shuffle
+					</Button>
+				</HStack>
+				<HStack>
+					{letterArray.map((_, i) => (
 						<LetterBox
 							key={i}
-							letter={ltrArray[i]}
-							disabled={ltrArray[i] === ""}
-							onClick={() => {
-								inputArray[inputArray.indexOf("")] =
-									ltrArray[i];
-								ltrArray[i] = "";
-								setInputArray(inputArray);
-								setLtrArray(ltrArray);
-								console.log(inputArray);
-								console.log(ltrArray);
+							letter={letterArray[i]}
+							disabled={letterArray[i] === ""}
+							onClick={async () => {
+								await setInputArray((prev) => {
+									const temp = prev.slice();
+									temp[temp.indexOf("")] = letterArray[i];
+									return temp;
+								});
+								await setLetterArray((prev) => {
+									const temp = prev.slice();
+									temp[i] = "";
+									return temp;
+								});
 							}}
 						/>
 					))}
