@@ -65,7 +65,7 @@ const About: NextPage = () => {
 						<LetterBox
 							key={i}
 							letter={ltrArray[i]}
-							disabled={inputArray[i] === ""}
+							disabled={ltrArray[i] === ""}
 							onClick={() => {
 								inputArray[inputArray.indexOf("")] =
 									ltrArray[i];
