@@ -7,6 +7,7 @@ import {
 	useColorModeValue,
 	useColorMode,
 	HStack,
+	useDisclosure,
 } from "@chakra-ui/react";
 import {
 	MoonIcon,
@@ -14,9 +15,11 @@ import {
 	QuestionIcon,
 	QuestionOutlineIcon,
 } from "@chakra-ui/icons";
+import HelpModal from "./helpModal";
 
 const NavigationBar: React.FC = () => {
 	const { colorMode, toggleColorMode } = useColorMode();
+	const { isOpen, onOpen, onClose } = useDisclosure();
 
 	return (
 		<Box
@@ -24,6 +27,7 @@ const NavigationBar: React.FC = () => {
 			px={8}
 			py={4}
 			w="100%">
+			<HelpModal isOpen={isOpen} onClose={onClose} />
 			<Flex alignItems="center" justifyContent="space-between">
 				<Link href="/">
 					<Heading
@@ -36,7 +40,7 @@ const NavigationBar: React.FC = () => {
 					</Heading>
 				</Link>
 				<HStack>
-					<Button onClick={toggleColorMode} w="3rem" h="3rem">
+					<Button onClick={onOpen} w="3rem" h="3rem">
 						{colorMode === "light" ? (
 							<QuestionOutlineIcon w="1.5rem" h="1.5rem" />
 						) : (
