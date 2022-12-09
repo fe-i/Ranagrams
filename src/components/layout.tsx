@@ -1,12 +1,8 @@
-import { Box, BoxProps, VStack } from "@chakra-ui/react";
+import { VStack } from "@chakra-ui/react";
 import Metadata from "./metadata";
 import NavigationBar from "./navigationBar";
 
-interface LayoutProps extends BoxProps {
-	title?: string;
-}
-
-const Layout: React.FC<React.PropsWithChildren<LayoutProps>> = ({
+const Layout: React.FC<React.PropsWithChildren<{ title?: string }>> = ({
 	title,
 	children,
 }) => {
