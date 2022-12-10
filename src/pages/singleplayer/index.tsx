@@ -52,7 +52,7 @@ const About: NextPage = () => {
 			/>
 			<EndModal isOpen={!isActive && time === 0}>
 				<Text>
-					You created {foundArray.length} words and scored {points}{" "}
+					You created {foundArray.length} word(s) and scored {points}{" "}
 					points. View the words you found by clicking{" "}
 					<Link textDecoration="underline" onClick={WBonOpen}>
 						here
