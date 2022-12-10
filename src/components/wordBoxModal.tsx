@@ -23,11 +23,11 @@ const WordBoxModal: React.FC<{
 					fontSize="3xl"
 					textDecoration="underline"
 					textAlign="center">
-					Used Words
+					Found Words
 				</ModalHeader>
 				<ModalBody fontSize="xl">
 					{!words.length ? (
-						<Text>There's no words yet!</Text>
+						<Text>There are no words!</Text>
 					) : (
 						words
 							.sort(

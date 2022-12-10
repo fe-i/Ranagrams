@@ -1,12 +1,22 @@
-import { Flex, Text, Button, HStack, useDisclosure } from "@chakra-ui/react";
+import {
+	Flex,
+	Text,
+	Button,
+	HStack,
+	Link,
+	useDisclosure,
+} from "@chakra-ui/react";
 import { NextPage } from "next";
 import { useEffect, useState } from "react";
+import { MdListAlt, MdOutlineTimer } from "react-icons/md";
+import EndModal from "../../components/endModal";
 import Layout from "../../components/layout";
 import LetterBox from "../../components/letterBox";
 import PopupModal from "../../components/popupModal";
 import WordBoxModal from "../../components/wordBoxModal";
 import useIsWord from "../../hooks/useIsWord";
 import useRandomWord from "../../hooks/useRandomWord";
+import useTimer from "../../hooks/useTimer";
 
 const About: NextPage = () => {
 	const { isOpen: PisOpen, onClose: PonClose } = useDisclosure({
@@ -24,9 +34,10 @@ const About: NextPage = () => {
 	}, []);
 
 	const [points, setPoints] = useState(0);
+	const { time, isActive, toggle } = useTimer(60);
 	const [inputArray, setInputArray] = useState(new Array(6).fill(""));
 	const [letterArray, setLetterArray] = useState(new Array(6).fill(""));
-	const [usedArray, setUsedArray] = useState(new Array());
+	const [foundArray, setFoundArray] = useState(new Array());
 
 	return (
 		<Layout title="Singleplayer">
@@ -34,10 +45,21 @@ const About: NextPage = () => {
 				isOpen={PisOpen}
 				onClose={() => {
 					setLetterArray(randomWord.split(""));
+					toggle();
 					PonClose();
 				}}
 				isReady={randomWord !== "potato"}
 			/>
+			<EndModal isOpen={!isActive && time === 0}>
+				<Text>
+					You created {foundArray.length} words and scored {points}{" "}
+					points. View the words you found by clicking{" "}
+					<Link textDecoration="underline" onClick={WBonOpen}>
+						here
+					</Link>
+					.
+				</Text>
+			</EndModal>
 			<Flex
 				alignItems="center"
 				justifyContent="center"
@@ -47,7 +69,12 @@ const About: NextPage = () => {
 				gap="1rem"
 				h="100%"
 				px={8}>
-				<Text>Points: {points}</Text>
+				<HStack>
+					<MdListAlt />
+					<Text>{points}</Text>
+					<MdOutlineTimer />
+					<Text>{time}s</Text>
+				</HStack>
 				<HStack>
 					{inputArray.map((_, i) => (
 						<LetterBox
@@ -78,8 +105,8 @@ const About: NextPage = () => {
 							setPoints(
 								points + 100 * Math.pow(2, finalWord.length - 3)
 							);
-							setUsedArray((prev) => {
-								if (usedArray.includes(finalWord)) return prev;
+							setFoundArray((prev) => {
+								if (foundArray.includes(finalWord)) return prev;
 								prev.push(finalWord);
 								return prev;
 							});
@@ -113,10 +140,10 @@ const About: NextPage = () => {
 				<WordBoxModal
 					isOpen={WBisOpen}
 					onClose={WBonClose}
-					words={usedArray}
+					words={foundArray}
 				/>
 				<HStack>
-					<Button onClick={WBonOpen}>Show Used Words</Button>
+					<Button onClick={WBonOpen}>Show Found Words</Button>
 					<Button
 						onClick={() => {
 							setInputArray(() => new Array(6).fill(""));
