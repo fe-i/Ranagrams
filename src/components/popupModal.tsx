@@ -26,8 +26,8 @@ const PopupModal: React.FC<{
 				<ModalBody fontSize="xl">
 					Create as many words as you can in 60 seconds. Click on the
 					letters to add them to the word builder and hit submit when
-					you have formed a valid word. Click start whenever you're
-					ready.
+					you have formed a valid word. Click start whenever
+					you&apos;re ready.
 				</ModalBody>
 				<ModalFooter>
 					{isReady ? (

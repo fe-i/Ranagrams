@@ -29,7 +29,7 @@ const useTimer = (amount: number) => {
 			}, 1000);
 		}
 		return () => clearInterval(interval);
-	}, [isActive, time]);
+	}, [time, isActive]);
 
 	return { time, isActive, toggle };
 };
