@@ -101,12 +101,12 @@ const About: NextPage = () => {
 					onClick={async () => {
 						const finalWord = inputArray.join("");
 						const result = await isWord(finalWord);
-						if (result) {
+						if (result && !foundArray.includes(finalWord)) {
 							setPoints(
 								points + 100 * Math.pow(2, finalWord.length - 3)
 							);
 							setFoundArray((prev) => {
-								if (foundArray.includes(finalWord)) return prev;
+								if (foundArray.includes(finalWord)) return prev; //TODO: it adds to array twice
 								prev.push(finalWord);
 								return prev;
 							});
