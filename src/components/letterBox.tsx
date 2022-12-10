@@ -7,10 +7,10 @@ const LetterBox: React.FC<{
 }> = ({ letter, disabled, onClick }) => {
 	return (
 		<Button
-			border="2px solid black"
-			borderRadius="xl"
-			w={{ base: "10vw", md: "6rem" }}
-			h={{ base: "10vw", md: "6rem" }}
+			border="1.5px solid black"
+			borderRadius="md"
+			w={{ base: "12vw", md: "6rem" }}
+			h={{ base: "12vw", md: "6rem" }}
 			fontSize={{ base: 20, md: 40 }}
 			disabled={disabled}
 			onClick={onClick}>

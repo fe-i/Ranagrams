@@ -5,9 +5,7 @@ import {
 	ModalHeader,
 	ModalFooter,
 	ModalBody,
-	ModalCloseButton,
 	Button,
-	Text,
 } from "@chakra-ui/react";
 
 const HelpModal: React.FC<{ isOpen: boolean; onClose: () => void }> = ({
@@ -15,19 +13,27 @@ const HelpModal: React.FC<{ isOpen: boolean; onClose: () => void }> = ({
 	onClose,
 }) => {
 	return (
-		<>
-			<Modal isOpen={isOpen} onClose={onClose}>
-				<ModalOverlay />
-				<ModalContent>
-					<ModalHeader>How to Play</ModalHeader>
-					<ModalCloseButton />
-					<ModalBody>
-						<Text>lol</Text>
-					</ModalBody>
-					<ModalFooter />
-				</ModalContent>
-			</Modal>
-		</>
+		<Modal isOpen={isOpen} onClose={onClose}>
+			<ModalOverlay />
+			<ModalContent>
+				<ModalHeader
+					fontSize="3xl"
+					textDecoration="underline"
+					textAlign="center">
+					How to Play
+				</ModalHeader>
+				<ModalBody fontSize="xl">
+					Based on the letters provided, combine them to make words.
+					Try to make as many unique words as you can before the timer
+					runs out!
+				</ModalBody>
+				<ModalFooter>
+					<Button colorScheme="green" onClick={onClose}>
+						Got It
+					</Button>
+				</ModalFooter>
+			</ModalContent>
+		</Modal>
 	);
 };
 

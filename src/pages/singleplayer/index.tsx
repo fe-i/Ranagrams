@@ -1,12 +1,22 @@
-import { Flex, Text, Button, HStack } from "@chakra-ui/react";
+import { Flex, Text, Button, HStack, useDisclosure } from "@chakra-ui/react";
 import { NextPage } from "next";
 import { useEffect, useState } from "react";
 import Layout from "../../components/layout";
 import LetterBox from "../../components/letterBox";
+import PopupModal from "../../components/popupModal";
+import WordBoxModal from "../../components/wordBoxModal";
 import useIsWord from "../../hooks/useIsWord";
 import useRandomWord from "../../hooks/useRandomWord";
 
 const About: NextPage = () => {
+	const { isOpen: PisOpen, onClose: PonClose } = useDisclosure({
+		defaultIsOpen: true,
+	});
+	const {
+		isOpen: WBisOpen,
+		onOpen: WBonOpen,
+		onClose: WBonClose,
+	} = useDisclosure();
 	const { isWord } = useIsWord();
 	const { randomWord, getRandomWord } = useRandomWord();
 	useEffect(() => {
@@ -15,10 +25,19 @@ const About: NextPage = () => {
 
 	const [points, setPoints] = useState(0);
 	const [inputArray, setInputArray] = useState(new Array(6).fill(""));
-	const [letterArray, setLetterArray] = useState(randomWord.split(""));
+	const [letterArray, setLetterArray] = useState(new Array(6).fill(""));
+	const [usedArray, setUsedArray] = useState(new Array());
 
 	return (
 		<Layout title="Singleplayer">
+			<PopupModal
+				isOpen={PisOpen}
+				onClose={() => {
+					setLetterArray(randomWord.split(""));
+					PonClose();
+				}}
+				isReady={randomWord !== "potato"}
+			/>
 			<Flex
 				alignItems="center"
 				justifyContent="center"
@@ -35,13 +54,13 @@ const About: NextPage = () => {
 							key={i}
 							letter={inputArray[i]}
 							disabled={inputArray[i] === ""}
-							onClick={async () => {
-								await setInputArray((prev) => {
+							onClick={() => {
+								setInputArray((prev) => {
 									const temp = prev.slice();
 									temp.splice(i, 1);
 									return [...temp, ""];
 								});
-								await setLetterArray((prev) => {
+								setLetterArray((prev) => {
 									const temp = prev.slice();
 									temp[temp.indexOf("")] = inputArray[i];
 									return temp;
@@ -50,52 +69,39 @@ const About: NextPage = () => {
 						/>
 					))}
 				</HStack>
-				<HStack>
-					<Button
-						disabled={inputArray.join("").length < 3}
-						onClick={async () => {
-							const finalWord = inputArray.join("");
-							const result = await isWord(finalWord);
-							result
-								? setPoints(
-										points +
-											100 *
-												Math.pow(
-													2,
-													finalWord.length - 3
-												)
-								  )
-								: null;
-							setInputArray(() => new Array(6).fill(""));
-							setLetterArray(() => randomWord.split(""));
-						}}>
-						Submit
-					</Button>
-					<Button
-						onClick={async () => {
-							setInputArray(() => new Array(6).fill(""));
-							setLetterArray(() =>
-								randomWord.split("").sort(function () {
-									return 0.5 - Math.random();
-								})
+				<Button
+					disabled={inputArray.join("").length < 3}
+					onClick={async () => {
+						const finalWord = inputArray.join("");
+						const result = await isWord(finalWord);
+						if (result) {
+							setPoints(
+								points + 100 * Math.pow(2, finalWord.length - 3)
 							);
-						}}>
-						Shuffle
-					</Button>
-				</HStack>
+							setUsedArray((prev) => {
+								if (usedArray.includes(finalWord)) return prev;
+								prev.push(finalWord);
+								return prev;
+							});
+						}
+						setInputArray(() => new Array(6).fill(""));
+						setLetterArray(() => randomWord.split(""));
+					}}>
+					Submit
+				</Button>
 				<HStack>
 					{letterArray.map((_, i) => (
 						<LetterBox
 							key={i}
 							letter={letterArray[i]}
 							disabled={letterArray[i] === ""}
-							onClick={async () => {
-								await setInputArray((prev) => {
+							onClick={() => {
+								setInputArray((prev) => {
 									const temp = prev.slice();
 									temp[temp.indexOf("")] = letterArray[i];
 									return temp;
 								});
-								await setLetterArray((prev) => {
+								setLetterArray((prev) => {
 									const temp = prev.slice();
 									temp[i] = "";
 									return temp;
@@ -103,6 +109,25 @@ const About: NextPage = () => {
 							}}
 						/>
 					))}
+				</HStack>
+				<WordBoxModal
+					isOpen={WBisOpen}
+					onClose={WBonClose}
+					words={usedArray}
+				/>
+				<HStack>
+					<Button onClick={WBonOpen}>Show Used Words</Button>
+					<Button
+						onClick={() => {
+							setInputArray(() => new Array(6).fill(""));
+							setLetterArray(() =>
+								randomWord.split("").sort(() => {
+									return 0.5 - Math.random();
+								})
+							);
+						}}>
+						Shuffle
+					</Button>
 				</HStack>
 			</Flex>
 		</Layout>

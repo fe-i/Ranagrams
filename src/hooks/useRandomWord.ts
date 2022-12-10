@@ -12,7 +12,7 @@ const useRandomWord = () => {
 					? setRandomWord(
 							data[0]
 								.split("")
-								.sort(function () {
+								.sort(() => {
 									return 0.5 - Math.random();
 								})
 								.join("")
