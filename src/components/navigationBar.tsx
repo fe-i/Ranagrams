@@ -7,14 +7,9 @@ import {
 	useColorModeValue,
 	useColorMode,
 	HStack,
-	useDisclosure,
+	useDisclosure
 } from "@chakra-ui/react";
-import {
-	MoonIcon,
-	SunIcon,
-	QuestionIcon,
-	QuestionOutlineIcon,
-} from "@chakra-ui/icons";
+import { MoonIcon, SunIcon, QuestionIcon, QuestionOutlineIcon } from "@chakra-ui/icons";
 import HelpModal from "./helpModal";
 
 const NavigationBar: React.FC = () => {
@@ -22,11 +17,7 @@ const NavigationBar: React.FC = () => {
 	const { isOpen, onOpen, onClose } = useDisclosure();
 
 	return (
-		<Box
-			bg={useColorModeValue("gray.100", "gray.900")}
-			px={8}
-			py={4}
-			w="100%">
+		<Box bg={useColorModeValue("gray.100", "gray.900")} px={8} py={4} w="100%">
 			<HelpModal isOpen={isOpen} onClose={onClose} />
 			<Flex alignItems="center" justifyContent="space-between">
 				<Link href="/">
@@ -36,7 +27,7 @@ const NavigationBar: React.FC = () => {
 						fontSize="35px"
 						bgGradient="linear(to-r, blue.400, blue.600)"
 						backgroundClip="text">
-						Vanagrams
+						Ranagrams
 					</Heading>
 				</Link>
 				<HStack>
