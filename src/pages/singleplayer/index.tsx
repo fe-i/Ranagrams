@@ -5,6 +5,7 @@ import {
 	HStack,
 	Link,
 	useDisclosure,
+	useToast,
 } from "@chakra-ui/react";
 import { NextPage } from "next";
 import { useEffect, useState } from "react";
@@ -39,16 +40,21 @@ const About: NextPage = () => {
 	const [letterArray, setLetterArray] = useState(new Array(6).fill(""));
 	const [foundArray, setFoundArray] = useState(new Array());
 
+	const toast = useToast();
+
 	return (
 		<Layout title="Singleplayer">
 			<PopupModal
 				isOpen={PisOpen}
 				onClose={() => {
-					setLetterArray(randomWord.split(""));
+					setLetterArray(randomWord);
 					toggle();
 					PonClose();
 				}}
-				isReady={randomWord !== "potato"}
+				isReady={
+					JSON.stringify(randomWord) !==
+					JSON.stringify("steaks".split(""))
+				}
 			/>
 			<EndModal isOpen={!isActive && time === 0}>
 				<Text>
@@ -106,13 +112,38 @@ const About: NextPage = () => {
 								points + 100 * Math.pow(2, finalWord.length - 3)
 							);
 							setFoundArray((prev) => {
-								if (foundArray.includes(finalWord)) return prev; //TODO: it adds to array twice
+								if (foundArray.includes(finalWord)) return prev;
 								prev.push(finalWord);
 								return prev;
 							});
+							toast({
+								description: `${finalWord} (+${
+									100 * Math.pow(2, finalWord.length - 3)
+								})`,
+								status: "success",
+								duration: 3000,
+								variant: "left-accent",
+								isClosable: true,
+							});
+						} else if (foundArray.includes(finalWord)) {
+							toast({
+								description: "Word already found.",
+								status: "warning",
+								duration: 3000,
+								variant: "left-accent",
+								isClosable: true,
+							});
+						} else {
+							toast({
+								description: "Invalid word.",
+								status: "error",
+								duration: 3000,
+								variant: "left-accent",
+								isClosable: true,
+							});
 						}
 						setInputArray(() => new Array(6).fill(""));
-						setLetterArray(() => randomWord.split(""));
+						setLetterArray(() => randomWord);
 					}}>
 					Submit
 				</Button>
@@ -148,7 +179,7 @@ const About: NextPage = () => {
 						onClick={() => {
 							setInputArray(() => new Array(6).fill(""));
 							setLetterArray(() =>
-								randomWord.split("").sort(() => {
+								randomWord.sort(() => {
 									return 0.5 - Math.random();
 								})
 							);
