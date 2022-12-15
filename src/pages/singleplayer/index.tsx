@@ -51,10 +51,7 @@ const About: NextPage = () => {
 					toggle();
 					PonClose();
 				}}
-				isReady={
-					JSON.stringify(randomWord) !==
-					JSON.stringify("steaks".split(""))
-				}
+				isReady={randomWord.join("") !== "steaks"}
 			/>
 			<EndModal isOpen={!isActive && time === 0}>
 				<Text>
