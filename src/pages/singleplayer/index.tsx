@@ -1,4 +1,4 @@
-import { Flex, Text, Button, HStack, useDisclosure, useToast } from "@chakra-ui/react";
+import { Flex, Text, Button, HStack, Divider, useDisclosure, useToast } from "@chakra-ui/react";
 import { NextPage } from "next";
 import { useEffect, useState } from "react";
 import { MdListAlt, MdOutlineTimer } from "react-icons/md";
@@ -20,7 +20,7 @@ const About: NextPage = () => {
 	});
 	const { isOpen: WBisOpen, onOpen: WBonOpen, onClose: WBonClose } = useDisclosure();
 	const [points, setPoints] = useState(0);
-	const { time, isActive, toggle } = useTimer(60);
+	const { time, isActive, toggleTimer } = useTimer(60);
 	const [inputArray, setInputArray] = useState(new Array(6).fill(""));
 	const [letterArray, setLetterArray] = useState(new Array(6).fill(""));
 	const [foundArray, setFoundArray] = useState(new Array());
@@ -40,10 +40,10 @@ const About: NextPage = () => {
 	}, []);
 
 	useKeyboard(
-		(e) => {
+		async (e) => {
 			if (e.code === "Backspace") return console.log("backspace");
 			if (e.code === "Enter") return console.log("enter");
-			if (e.code.startsWith("Key")) return;
+			if (!e.code.startsWith("Key")) return;
 			const key = e.code.split("Key")[1]?.toLowerCase();
 			if (letterArray.includes(key)) {
 				console.log("hi" + key);
@@ -68,8 +68,8 @@ const About: NextPage = () => {
 			<StartModal
 				isOpen={SisOpen}
 				onClose={() => {
-					setLetterArray(randomWord);
-					toggle();
+					setLetterArray(() => randomWord);
+					toggleTimer();
 					SonClose();
 				}}
 				isReady={hasWord}
@@ -78,7 +78,7 @@ const About: NextPage = () => {
 				isOpen={!isActive && time === 0}
 				words={foundArray}
 				score={points}
-				wordBoxOpen={WBonOpen}
+				wordBoxOpen={WBonOpen} //TODO: CLOSE WORDBOX MODAL BEFORE POPUP APPEARS OR MAKE IT IN FRONT
 			/>
 			<WordBoxModal isOpen={WBisOpen} onClose={WBonClose} words={foundArray} />
 			<Flex
@@ -117,29 +117,7 @@ const About: NextPage = () => {
 						/>
 					))}
 				</HStack>
-				<Button
-					disabled={!isActive || inputArray.join("").length < 3}
-					onClick={async () => {
-						const finalWord = inputArray.join("");
-						const result = await isWord(finalWord);
-						if (result && !foundArray.includes(finalWord)) {
-							setPoints(points + 100 * Math.pow(2, finalWord.length - 3));
-							setFoundArray((prev) => {
-								prev.push(finalWord);
-								return prev;
-							});
-							toast(
-								`${finalWord} (+${100 * Math.pow(2, finalWord.length - 3)})`,
-								"success"
-							);
-						} else if (foundArray.includes(finalWord))
-							toast("Word already found.", "warning");
-						else toast("Invalid word.", "error");
-						setInputArray(() => new Array(6).fill(""));
-						setLetterArray(() => randomWord);
-					}}>
-					Submit
-				</Button>
+				<Divider bg="black" h="0.1rem" />
 				<HStack>
 					{letterArray.map((_, i) => (
 						<LetterButton
@@ -173,6 +151,29 @@ const About: NextPage = () => {
 							);
 						}}>
 						Shuffle
+					</Button>
+					<Button
+						disabled={!isActive || inputArray.join("").length < 3}
+						onClick={async () => {
+							const finalWord = inputArray.join("");
+							const result = await isWord(finalWord);
+							if (result && !foundArray.includes(finalWord)) {
+								setPoints(points + 100 * Math.pow(2, finalWord.length - 3));
+								setFoundArray((prev) => {
+									prev.push(finalWord);
+									return prev;
+								});
+								toast(
+									`${finalWord} (+${100 * Math.pow(2, finalWord.length - 3)})`,
+									"success"
+								);
+							} else if (foundArray.includes(finalWord))
+								toast("Word already found.", "warning");
+							else toast("Invalid word.", "error");
+							setInputArray(() => new Array(6).fill(""));
+							setLetterArray(() => randomWord);
+						}}>
+						Submit
 					</Button>
 				</HStack>
 			</Flex>
