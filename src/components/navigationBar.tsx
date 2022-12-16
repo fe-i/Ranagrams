@@ -10,7 +10,7 @@ import {
 	useDisclosure
 } from "@chakra-ui/react";
 import { MoonIcon, SunIcon, QuestionIcon, QuestionOutlineIcon } from "@chakra-ui/icons";
-import HelpModal from "./helpModal";
+import HelpModal from "./modals/helpModal";
 
 const NavigationBar: React.FC = () => {
 	const { colorMode, toggleColorMode } = useColorMode();

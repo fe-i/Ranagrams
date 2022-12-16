@@ -1,20 +1,26 @@
-import { Box, Image, Text, Link, HStack } from "@chakra-ui/react";
+import { Flex, Text, Link, HStack } from "@chakra-ui/react";
 import Layout from "../components/layout";
 import LetterBox from "../components/letterBox";
 
 export default function NotFound() {
 	return (
 		<Layout title="Not Found">
-			<Box textAlign="center" alignItems="center" py={10} px={6}>
-				<HStack justifyContent="center" spacing={5}>
+			<Flex
+				alignItems="center"
+				justifyContent="center"
+				textAlign="center"
+				flexDir="column"
+				h="100%"
+				px={8}>
+				<HStack spacing={5}>
 					{"404".split("").map((_, i) => (
-						<LetterBox key={i} disabled={true} letter={_} />
+						<LetterBox key={i} color="red.400" size="5rem" letter={_} />
 					))}
 				</HStack>
-				<Text fontSize="25px" mt={3} mb={2}>
+				<Text fontSize="30px" mt={3} mb={2}>
 					Page Not Found
 				</Text>
-				<Text color="gray.500" mb={6}>
+				<Text color="gray.500" fontSize="xl" mb={6}>
 					The page you&apos;re looking for does not seem to exist.
 				</Text>
 				<Link
@@ -22,15 +28,15 @@ export default function NotFound() {
 					px={20}
 					py={2.5}
 					borderRadius={15}
+					fontSize="xl"
 					bgGradient="linear(to-r, blue.300, blue.500)"
 					color="white"
-					fontWeight="bold"
 					_hover={{
-						bgGradient: "linear(to-r, blue.400, blue.600)",
+						bgGradient: "linear(to-r, blue.400, blue.600)"
 					}}>
 					Go to Home
 				</Link>
-			</Box>
+			</Flex>
 		</Layout>
 	);
 }

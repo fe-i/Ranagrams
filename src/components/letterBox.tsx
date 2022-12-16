@@ -1,21 +1,23 @@
-import { Button } from "@chakra-ui/react";
+import { Flex } from "@chakra-ui/react";
 
 const LetterBox: React.FC<{
+	size?: any;
+	color?: any;
 	letter: string;
-	disabled: boolean;
-	onClick?: React.MouseEventHandler<HTMLButtonElement>;
-}> = ({ letter, disabled, onClick }) => {
+}> = ({ size, color, letter }) => {
 	return (
-		<Button
-			border="1.5px solid black"
+		<Flex
+			alignItems="center"
+			justifyContent="center"
+			textAlign="center"
+			w={{ base: "12vw", md: size ?? "3rem" }}
+			h={{ base: "12vw", md: size ?? "3rem" }}
+			border="2px solid black"
 			borderRadius="md"
-			w={{ base: "12vw", md: "6rem" }}
-			h={{ base: "12vw", md: "6rem" }}
-			fontSize={{ base: 20, md: 40 }}
-			disabled={disabled}
-			onClick={onClick}>
+			fontSize={{ base: 30, md: 40 }}
+			bg={color}>
 			{letter}
-		</Button>
+		</Flex>
 	);
 };
 

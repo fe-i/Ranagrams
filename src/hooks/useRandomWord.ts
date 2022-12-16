@@ -1,22 +1,27 @@
 import { useState } from "react";
+import { rword } from "rword";
 import useIsWord from "./useIsWord";
-import randomWords from "random-words";
+
+rword.load("big");
 
 const useRandomWord = () => {
-	const [randomWord, setRandomWord] = useState("steaks".split(""));
+	const [randomWord, setRandomWord] = useState(new Array(6).fill(""));
+	const [hasWord, setHasWord] = useState(false);
 	const { isWord } = useIsWord();
+
 	const getRandomWord = async () => {
-		const word = randomWords({ maxLength: 6, join: "" });
-		(await isWord(word))
-			? setRandomWord(
-					word.split("").sort(() => {
-						return 0.5 - Math.random();
-					})
-			  )
-			: getRandomWord();
-		console.log(randomWord);
+		const word = rword.generate(1, { length: 6 });
+		if (await isWord(word)) {
+			setRandomWord(
+				word.split("").sort(() => {
+					return 0.5 - Math.random();
+				})
+			);
+			setHasWord(!hasWord);
+		} else getRandomWord();
 	};
-	return { randomWord, getRandomWord };
+
+	return { randomWord, hasWord, getRandomWord };
 };
 
 export default useRandomWord;

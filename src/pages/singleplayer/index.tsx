@@ -1,38 +1,28 @@
-import {
-	Flex,
-	Text,
-	Button,
-	HStack,
-	Link,
-	useDisclosure,
-	useToast,
-} from "@chakra-ui/react";
+import { Flex, Text, Button, HStack, Link, useDisclosure, useToast } from "@chakra-ui/react";
 import { NextPage } from "next";
 import { useEffect, useState } from "react";
 import { MdListAlt, MdOutlineTimer } from "react-icons/md";
-import EndModal from "../../components/endModal";
+import EndModal from "../../components/modals/endModal";
 import Layout from "../../components/layout";
-import LetterBox from "../../components/letterBox";
-import PopupModal from "../../components/popupModal";
-import WordBoxModal from "../../components/wordBoxModal";
+import LetterButton from "../../components/letterButton";
+import PopupModal from "../../components/modals/popupModal";
+import WordBoxModal from "../../components/modals/wordBoxModal";
 import useIsWord from "../../hooks/useIsWord";
 import useRandomWord from "../../hooks/useRandomWord";
 import useTimer from "../../hooks/useTimer";
 
 const About: NextPage = () => {
-	const { isOpen: PisOpen, onClose: PonClose } = useDisclosure({
-		defaultIsOpen: true,
-	});
-	const {
-		isOpen: WBisOpen,
-		onOpen: WBonOpen,
-		onClose: WBonClose,
-	} = useDisclosure();
+	const { randomWord, hasWord, getRandomWord } = useRandomWord();
 	const { isWord } = useIsWord();
-	const { randomWord, getRandomWord } = useRandomWord();
+
 	useEffect(() => {
 		getRandomWord();
 	}, []);
+
+	const { isOpen: PisOpen, onClose: PonClose } = useDisclosure({
+		defaultIsOpen: true
+	});
+	const { isOpen: WBisOpen, onOpen: WBonOpen, onClose: WBonClose } = useDisclosure();
 
 	const [points, setPoints] = useState(0);
 	const { time, isActive, toggle } = useTimer(60);
@@ -51,12 +41,12 @@ const About: NextPage = () => {
 					toggle();
 					PonClose();
 				}}
-				isReady={randomWord.join("") !== "steaks"}
+				isReady={hasWord}
 			/>
 			<EndModal isOpen={!isActive && time === 0}>
 				<Text>
-					You created {foundArray.length} word(s) and scored {points}{" "}
-					points. View the words you found by clicking{" "}
+					You created {foundArray.length} word(s) and scored {points} points. View the
+					words you found by clicking{" "}
 					<Link textDecoration="underline" onClick={WBonOpen}>
 						here
 					</Link>
@@ -80,7 +70,7 @@ const About: NextPage = () => {
 				</HStack>
 				<HStack>
 					{inputArray.map((_, i) => (
-						<LetterBox
+						<LetterButton
 							key={i}
 							letter={inputArray[i]}
 							disabled={inputArray[i] === ""}
@@ -105,11 +95,8 @@ const About: NextPage = () => {
 						const finalWord = inputArray.join("");
 						const result = await isWord(finalWord);
 						if (result && !foundArray.includes(finalWord)) {
-							setPoints(
-								points + 100 * Math.pow(2, finalWord.length - 3)
-							);
+							setPoints(points + 100 * Math.pow(2, finalWord.length - 3));
 							setFoundArray((prev) => {
-								if (foundArray.includes(finalWord)) return prev;
 								prev.push(finalWord);
 								return prev;
 							});
@@ -120,7 +107,7 @@ const About: NextPage = () => {
 								status: "success",
 								duration: 3000,
 								variant: "left-accent",
-								isClosable: true,
+								isClosable: true
 							});
 						} else if (foundArray.includes(finalWord)) {
 							toast({
@@ -128,7 +115,7 @@ const About: NextPage = () => {
 								status: "warning",
 								duration: 3000,
 								variant: "left-accent",
-								isClosable: true,
+								isClosable: true
 							});
 						} else {
 							toast({
@@ -136,7 +123,7 @@ const About: NextPage = () => {
 								status: "error",
 								duration: 3000,
 								variant: "left-accent",
-								isClosable: true,
+								isClosable: true
 							});
 						}
 						setInputArray(() => new Array(6).fill(""));
@@ -146,7 +133,7 @@ const About: NextPage = () => {
 				</Button>
 				<HStack>
 					{letterArray.map((_, i) => (
-						<LetterBox
+						<LetterButton
 							key={i}
 							letter={letterArray[i]}
 							disabled={letterArray[i] === ""}
@@ -165,11 +152,7 @@ const About: NextPage = () => {
 						/>
 					))}
 				</HStack>
-				<WordBoxModal
-					isOpen={WBisOpen}
-					onClose={WBonClose}
-					words={foundArray}
-				/>
+				<WordBoxModal isOpen={WBisOpen} onClose={WBonClose} words={foundArray} />
 				<HStack>
 					<Button onClick={WBonOpen}>Show Found Words</Button>
 					<Button
