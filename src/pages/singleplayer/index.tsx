@@ -41,19 +41,20 @@ const About: NextPage = () => {
 
 	useKeyboard(
 		(e) => {
-			if (!e.code.startsWith("Key")) return;
-			const key = e.code.split("Key")[1];
-			console.log(letterArray);
-			if (letterArray.includes(key.toLowerCase())) {
+			if (e.code === "Backspace") return console.log("backspace");
+			if (e.code === "Enter") return console.log("enter");
+			if (e.code.startsWith("Key")) return;
+			const key = e.code.split("Key")[1]?.toLowerCase();
+			if (letterArray.includes(key)) {
 				console.log("hi" + key);
 				setInputArray((prev) => {
 					const temp = prev.slice();
-					temp[temp.indexOf("")] = key.toLowerCase();
+					temp[temp.indexOf("")] = key;
 					return temp;
 				});
 				setLetterArray((prev) => {
 					const temp = prev.slice();
-					temp[letterArray.indexOf(key.toLowerCase())] = "";
+					temp[letterArray.indexOf(key)] = "";
 					return temp;
 				});
 			}
