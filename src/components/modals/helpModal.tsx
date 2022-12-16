@@ -41,14 +41,14 @@ const HelpModal: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ isOpen,
 						Example
 					</Text>
 					<HStack>
-						{"melons".split("").map((letter) => (
-							<LetterBox color="green.300" letter={letter} />
+						{"melons".split("").map((_, i) => (
+							<LetterBox color="green.300" key={i} letter={_} />
 						))}
 					</HStack>
 					<Text fontSize="lg">can be rearranged into...</Text>
 					<HStack>
-						{"lemons".split("").map((letter) => (
-							<LetterBox color="yellow.200" letter={letter} />
+						{"lemons".split("").map((_, i) => (
+							<LetterBox color="yellow.200" key={i} letter={_} />
 						))}
 					</HStack>
 				</ModalBody>
