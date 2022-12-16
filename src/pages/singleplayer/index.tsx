@@ -19,7 +19,7 @@ const About: NextPage = () => {
 	});
 	const { isOpen: WBisOpen, onOpen: WBonOpen, onClose: WBonClose } = useDisclosure();
 	const [points, setPoints] = useState(0);
-	const { time, isActive, toggle } = useTimer(3);
+	const { time, isActive, toggle } = useTimer(60);
 	const [inputArray, setInputArray] = useState(new Array(6).fill(""));
 	const [letterArray, setLetterArray] = useState(new Array(6).fill(""));
 	const [foundArray, setFoundArray] = useState(new Array());
