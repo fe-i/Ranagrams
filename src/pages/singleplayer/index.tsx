@@ -14,45 +14,39 @@ import useTimer from "../../hooks/useTimer";
 const About: NextPage = () => {
 	const { randomWord, hasWord, getRandomWord } = useRandomWord();
 	const { isWord } = useIsWord();
+	const { isOpen: SisOpen, onClose: SonClose } = useDisclosure({
+		defaultIsOpen: true
+	});
+	const { isOpen: WBisOpen, onOpen: WBonOpen, onClose: WBonClose } = useDisclosure();
+	const [points, setPoints] = useState(0);
+	const { time, isActive, toggle } = useTimer(3);
+	const [inputArray, setInputArray] = useState(new Array(6).fill(""));
+	const [letterArray, setLetterArray] = useState(new Array(6).fill(""));
+	const [foundArray, setFoundArray] = useState(new Array());
+	const toast = useToast();
 
 	useEffect(() => {
 		getRandomWord();
 	}, []);
 
-	const { isOpen: PisOpen, onClose: PonClose } = useDisclosure({
-		defaultIsOpen: true
-	});
-	const { isOpen: WBisOpen, onOpen: WBonOpen, onClose: WBonClose } = useDisclosure();
-
-	const [points, setPoints] = useState(0);
-	const { time, isActive, toggle } = useTimer(60);
-	const [inputArray, setInputArray] = useState(new Array(6).fill(""));
-	const [letterArray, setLetterArray] = useState(new Array(6).fill(""));
-	const [foundArray, setFoundArray] = useState(new Array());
-
-	const toast = useToast();
-
 	return (
 		<Layout title="Singleplayer">
 			<StartModal
-				isOpen={PisOpen}
+				isOpen={SisOpen}
 				onClose={() => {
 					setLetterArray(randomWord);
 					toggle();
-					PonClose();
+					SonClose();
 				}}
 				isReady={hasWord}
 			/>
-			<EndModal isOpen={!isActive && time === 0}>
-				<Text>
-					You created {foundArray.length} word(s) and scored {points} points. View the
-					words you found by clicking{" "}
-					<Link textDecoration="underline" onClick={WBonOpen}>
-						here
-					</Link>
-					.
-				</Text>
-			</EndModal>
+			<EndModal
+				isOpen={!isActive && time === 0}
+				words={foundArray}
+				score={points}
+				wordBoxOpen={WBonOpen}
+			/>
+			<WordBoxModal isOpen={WBisOpen} onClose={WBonClose} words={foundArray} />
 			<Flex
 				alignItems="center"
 				justifyContent="center"
@@ -152,7 +146,6 @@ const About: NextPage = () => {
 						/>
 					))}
 				</HStack>
-				<WordBoxModal isOpen={WBisOpen} onClose={WBonClose} words={foundArray} />
 				<HStack>
 					<Button onClick={WBonOpen}>Show Found Words</Button>
 					<Button

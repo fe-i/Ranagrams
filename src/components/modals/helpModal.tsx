@@ -32,7 +32,7 @@ const HelpModal: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ isOpen,
 				</ModalHeader>
 				<ModalCloseButton />
 				<ModalBody>
-					<UnorderedList pb={2} fontSize="lg">
+					<UnorderedList mb={2} fontSize="lg">
 						<ListItem>Each word must use at least 3 letters.</ListItem>
 						<ListItem>Each letter can only be used once.</ListItem>
 					</UnorderedList>

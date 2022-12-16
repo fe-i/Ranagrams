@@ -3,51 +3,45 @@ import {
 	ModalOverlay,
 	ModalContent,
 	ModalHeader,
+	ModalCloseButton,
 	ModalFooter,
 	ModalBody,
-	Button,
-	Flex,
 	Text,
+	UnorderedList,
+	ListItem
 } from "@chakra-ui/react";
 
-const WordBoxModal: React.FC<{
-	isOpen: boolean;
-	onClose: () => void;
-	words: string[];
-}> = ({ isOpen, onClose, words }) => {
+const WordBoxModal: React.FC<{ isOpen: boolean; onClose: () => void; words: string[] }> = ({
+	isOpen,
+	onClose,
+	words
+}) => {
 	return (
-		<Modal isOpen={isOpen} onClose={onClose}>
+		<Modal blockScrollOnMount={true} isOpen={isOpen} onClose={onClose} isCentered>
 			<ModalOverlay />
 			<ModalContent>
-				<ModalHeader
-					fontSize="3xl"
-					textDecoration="underline"
-					textAlign="center">
-					Found Words
+				<ModalHeader pb={1}>
+					<Text fontSize="3xl" fontWeight="bold" textDecor="underline">
+						Found Words
+					</Text>
 				</ModalHeader>
+				<ModalCloseButton />
 				<ModalBody fontSize="xl">
 					{!words.length ? (
 						<Text>There are no words!</Text>
 					) : (
-						words
-							.sort(
-								(a, b) =>
-									a.localeCompare(b) && b.length - a.length
-							)
-							.map((_, i) => (
-								<Flex key={i}>
-									<Text key={i}>
+						<UnorderedList>
+							{words
+								.sort((a, b) => a.localeCompare(b) && b.length - a.length)
+								.map((_, i) => (
+									<ListItem key={i}>
 										{_} (+{100 * Math.pow(2, _.length - 3)})
-									</Text>
-								</Flex>
-							))
+									</ListItem>
+								))}
+						</UnorderedList>
 					)}
 				</ModalBody>
-				<ModalFooter>
-					<Button colorScheme="blue" onClick={onClose}>
-						Close
-					</Button>
-				</ModalFooter>
+				<ModalFooter py={{ base: "15vh", md: "10vh" }} />
 			</ModalContent>
 		</Modal>
 	);
