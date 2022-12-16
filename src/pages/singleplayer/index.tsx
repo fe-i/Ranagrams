@@ -1,11 +1,11 @@
-import { Flex, Text, Button, HStack, Link, useDisclosure, useToast } from "@chakra-ui/react";
+import { Flex, Text, Button, HStack, useDisclosure, useToast } from "@chakra-ui/react";
 import { NextPage } from "next";
 import { useEffect, useState } from "react";
 import { MdListAlt, MdOutlineTimer } from "react-icons/md";
-import EndModal from "../../components/modals/endModal";
 import Layout from "../../components/layout";
 import LetterButton from "../../components/letterButton";
 import StartModal from "../../components/modals/startModal";
+import EndModal from "../../components/modals/endModal";
 import WordBoxModal from "../../components/modals/wordBoxModal";
 import useIsWord from "../../hooks/useIsWord";
 import useRandomWord from "../../hooks/useRandomWord";
@@ -23,7 +23,16 @@ const About: NextPage = () => {
 	const [inputArray, setInputArray] = useState(new Array(6).fill(""));
 	const [letterArray, setLetterArray] = useState(new Array(6).fill(""));
 	const [foundArray, setFoundArray] = useState(new Array());
-	const toast = useToast();
+	const toastHook = useToast();
+	const toast = (description: string, status: any) =>
+		toastHook({
+			description,
+			status,
+			duration: 3000,
+			variant: "left-accent",
+			position: "top-right",
+			isClosable: true
+		});
 
 	useEffect(() => {
 		getRandomWord();
@@ -84,7 +93,7 @@ const About: NextPage = () => {
 					))}
 				</HStack>
 				<Button
-					disabled={inputArray.join("").length < 3}
+					disabled={!isActive || inputArray.join("").length < 3}
 					onClick={async () => {
 						const finalWord = inputArray.join("");
 						const result = await isWord(finalWord);
@@ -94,32 +103,13 @@ const About: NextPage = () => {
 								prev.push(finalWord);
 								return prev;
 							});
-							toast({
-								description: `${finalWord} (+${
-									100 * Math.pow(2, finalWord.length - 3)
-								})`,
-								status: "success",
-								duration: 3000,
-								variant: "left-accent",
-								isClosable: true
-							});
-						} else if (foundArray.includes(finalWord)) {
-							toast({
-								description: "Word already found.",
-								status: "warning",
-								duration: 3000,
-								variant: "left-accent",
-								isClosable: true
-							});
-						} else {
-							toast({
-								description: "Invalid word.",
-								status: "error",
-								duration: 3000,
-								variant: "left-accent",
-								isClosable: true
-							});
-						}
+							toast(
+								`${finalWord} (+${100 * Math.pow(2, finalWord.length - 3)})`,
+								"success"
+							);
+						} else if (foundArray.includes(finalWord))
+							toast("Word already found.", "warning");
+						else toast("Invalid word.", "error");
 						setInputArray(() => new Array(6).fill(""));
 						setLetterArray(() => randomWord);
 					}}>
