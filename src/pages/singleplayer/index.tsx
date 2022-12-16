@@ -10,6 +10,7 @@ import WordBoxModal from "../../components/modals/wordBoxModal";
 import useIsWord from "../../hooks/useIsWord";
 import useRandomWord from "../../hooks/useRandomWord";
 import useTimer from "../../hooks/useTimer";
+import useKeyboard from "../../hooks/useKeyboard";
 
 const About: NextPage = () => {
 	const { randomWord, hasWord, getRandomWord } = useRandomWord();
@@ -37,6 +38,29 @@ const About: NextPage = () => {
 	useEffect(() => {
 		getRandomWord();
 	}, []);
+
+	useKeyboard(
+		(e) => {
+			if (!e.code.startsWith("Key")) return;
+			const key = e.code.split("Key")[1];
+			console.log(letterArray);
+			if (letterArray.includes(key.toLowerCase())) {
+				console.log("hi" + key);
+				setInputArray((prev) => {
+					const temp = prev.slice();
+					temp[temp.indexOf("")] = key.toLowerCase();
+					return temp;
+				});
+				setLetterArray((prev) => {
+					const temp = prev.slice();
+					temp[letterArray.indexOf(key.toLowerCase())] = "";
+					return temp;
+				});
+			}
+			console.log(key);
+		},
+		[letterArray, setLetterArray, setInputArray]
+	);
 
 	return (
 		<Layout title="Singleplayer">
