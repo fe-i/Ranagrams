@@ -5,7 +5,7 @@ import { MdListAlt, MdOutlineTimer } from "react-icons/md";
 import EndModal from "../../components/modals/endModal";
 import Layout from "../../components/layout";
 import LetterButton from "../../components/letterButton";
-import PopupModal from "../../components/modals/popupModal";
+import StartModal from "../../components/modals/startModal";
 import WordBoxModal from "../../components/modals/wordBoxModal";
 import useIsWord from "../../hooks/useIsWord";
 import useRandomWord from "../../hooks/useRandomWord";
@@ -34,7 +34,7 @@ const About: NextPage = () => {
 
 	return (
 		<Layout title="Singleplayer">
-			<PopupModal
+			<StartModal
 				isOpen={PisOpen}
 				onClose={() => {
 					setLetterArray(randomWord);
