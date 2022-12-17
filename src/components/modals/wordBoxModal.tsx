@@ -26,7 +26,7 @@ const WordBoxModal: React.FC<{ isOpen: boolean; onClose: () => void; words: stri
 					</Text>
 				</ModalHeader>
 				<ModalCloseButton />
-				<ModalBody fontSize="xl">
+				<ModalBody fontSize="xl" minH={{ base: "15vh", md: "10vh" }}>
 					{!words.length ? (
 						<Text>There are no words!</Text>
 					) : (
@@ -41,7 +41,7 @@ const WordBoxModal: React.FC<{ isOpen: boolean; onClose: () => void; words: stri
 						</UnorderedList>
 					)}
 				</ModalBody>
-				<ModalFooter py={{ base: "15vh", md: "10vh" }} />
+				<ModalFooter />
 			</ModalContent>
 		</Modal>
 	);
