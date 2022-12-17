@@ -10,7 +10,8 @@ import {
 	UnorderedList,
 	ListItem,
 	Link,
-	Button
+	Button,
+	HStack
 } from "@chakra-ui/react";
 
 const EndModal: React.FC<
@@ -19,8 +20,9 @@ const EndModal: React.FC<
 		words: any;
 		score: number;
 		wordBoxOpen: MouseEventHandler<HTMLAnchorElement>;
+		startOpen: MouseEventHandler<HTMLButtonElement>;
 	}>
-> = ({ isOpen, words, score, wordBoxOpen }) => {
+> = ({ isOpen, words, score, wordBoxOpen, startOpen }) => {
 	return (
 		<Modal
 			closeOnOverlayClick={false}
@@ -49,9 +51,14 @@ const EndModal: React.FC<
 					</Text>
 				</ModalBody>
 				<ModalFooter>
-					<Link href="/singleplayer">
-						<Button colorScheme="green">Play Again</Button>
-					</Link>
+					<HStack>
+						<Link href="/singleplayer">
+							<Button colorScheme="green">Play Again (reload)</Button>
+						</Link>
+						<Button colorScheme="green" onClick={startOpen}>
+							Play Again
+						</Button>
+					</HStack>
 				</ModalFooter>
 			</ModalContent>
 		</Modal>

@@ -15,14 +15,18 @@ import useKeyboard from "../../hooks/useKeyboard";
 const About: NextPage = () => {
 	const { randomWord, hasWord, getRandomWord } = useRandomWord();
 	const { isWord } = useIsWord();
-	const { isOpen: SisOpen, onClose: SonClose } = useDisclosure({
+	const {
+		isOpen: SisOpen,
+		onOpen: SonOpen,
+		onClose: SonClose
+	} = useDisclosure({
 		defaultIsOpen: true
 	});
 	const { isOpen: WBisOpen, onOpen: WBonOpen, onClose: WBonClose } = useDisclosure();
 	const [points, setPoints] = useState(0);
-	const { time, isActive, toggleTimer } = useTimer(60);
+	const { time, isActive, resetTimer, toggleTimer } = useTimer(3);
 	const [inputArray, setInputArray] = useState(new Array(6).fill(""));
-	const [letterArray, setLetterArray] = useState(new Array(6).fill(""));
+	const [letterArray, setLetterArray] = useState(randomWord);
 	const [foundArray, setFoundArray] = useState(new Array());
 	const toastHook = useToast();
 	const toast = (description: string, status: any) =>
@@ -68,7 +72,11 @@ const About: NextPage = () => {
 			<StartModal
 				isOpen={SisOpen}
 				onClose={() => {
+					setPoints(0);
+					setInputArray(() => new Array(6).fill(""));
 					setLetterArray(() => randomWord);
+					setFoundArray(() => new Array());
+					resetTimer();
 					toggleTimer();
 					SonClose();
 				}}
@@ -79,6 +87,10 @@ const About: NextPage = () => {
 				words={foundArray}
 				score={points}
 				wordBoxOpen={WBonOpen} //TODO: CLOSE WORDBOX MODAL BEFORE POPUP APPEARS OR MAKE IT IN FRONT
+				startOpen={() => {
+					getRandomWord();
+					SonOpen();
+				}}
 			/>
 			<WordBoxModal isOpen={WBisOpen} onClose={WBonClose} words={foundArray} />
 			<Flex
