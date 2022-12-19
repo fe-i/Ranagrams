@@ -39,6 +39,59 @@ const About: NextPage = () => {
 			isClosable: true
 		});
 
+	const add = (key: string) => {
+		setInputArray((prev) => {
+			const temp = prev.slice();
+			temp[temp.indexOf("")] = key;
+			return temp;
+		});
+		setLetterArray((prev) => {
+			const temp = prev.slice();
+			temp[letterArray.indexOf(key)] = "";
+			return temp;
+		});
+	};
+
+	const erase = () => {
+		const temp = inputArray.filter((letter) => letter !== "");
+		const value = temp[temp.length - 1];
+		setInputArray((prev) => {
+			const temp = prev.slice();
+			temp[temp.lastIndexOf(value)] = "";
+			return temp;
+		});
+		setLetterArray((prev) => {
+			const temp = prev.slice();
+			temp[temp.indexOf("")] = value;
+			return temp;
+		});
+	};
+
+	const shuffle = () => {
+		setInputArray(() => new Array(6).fill(""));
+		setLetterArray(() =>
+			randomWord.sort(() => {
+				return 0.5 - Math.random();
+			})
+		);
+	};
+
+	const submit = async () => {
+		const finalWord = inputArray.join("");
+		const result = await isWord(finalWord);
+		if (result && !foundArray.includes(finalWord)) {
+			setPoints(points + 100 * Math.pow(2, finalWord.length - 3));
+			setFoundArray((prev) => {
+				prev.push(finalWord);
+				return prev;
+			});
+			toast(`${finalWord} (+${100 * Math.pow(2, finalWord.length - 3)})`, "success");
+		} else if (foundArray.includes(finalWord)) toast("Word already found.", "warning");
+		else toast("Invalid word.", "error");
+		setInputArray(() => new Array(6).fill(""));
+		setLetterArray(() => randomWord);
+	};
+
 	useEffect(() => {
 		getRandomWord();
 	}, []);
@@ -46,57 +99,12 @@ const About: NextPage = () => {
 	useKeyboard(
 		async (e) => {
 			if (!isActive && time !== 60) return;
-			if (e.code === "Backspace" && inputArray[0] !== "") {
-				const temp = inputArray.filter((letter) => letter !== "");
-				const value = temp[temp.length - 1];
-				setInputArray((prev) => {
-					const temp = prev.slice();
-					temp.splice(temp.indexOf(value), 1);
-					return [...temp, ""];
-				});
-				setLetterArray((prev) => {
-					const temp = prev.slice();
-					temp[temp.indexOf("")] = value;
-					return temp;
-				});
-			}
-			if (e.code === "Enter" && inputArray.join("").length >= 3) {
-				const finalWord = inputArray.join("");
-				const result = await isWord(finalWord);
-				if (result && !foundArray.includes(finalWord)) {
-					setPoints(points + 100 * Math.pow(2, finalWord.length - 3));
-					setFoundArray((prev) => {
-						prev.push(finalWord);
-						return prev;
-					});
-					toast(`${finalWord} (+${100 * Math.pow(2, finalWord.length - 3)})`, "success");
-				} else if (foundArray.includes(finalWord)) toast("Word already found.", "warning");
-				else toast("Invalid word.", "error");
-				setInputArray(() => new Array(6).fill(""));
-				setLetterArray(() => randomWord);
-			}
-			if (e.code === "Slash") {
-				setInputArray(() => new Array(6).fill(""));
-				setLetterArray(() =>
-					randomWord.sort(() => {
-						return 0.5 - Math.random();
-					})
-				);
-			}
+			if (e.code === "Backspace" && inputArray[0] !== "") erase();
+			if (e.code === "Enter" && inputArray.join("").length >= 3) submit();
+			if (e.code === "Slash") shuffle();
 			if (!e.code.startsWith("Key")) return;
 			const key = e.code.split("Key")[1]?.toLowerCase();
-			if (letterArray.includes(key)) {
-				setInputArray((prev) => {
-					const temp = prev.slice();
-					temp[temp.indexOf("")] = key;
-					return temp;
-				});
-				setLetterArray((prev) => {
-					const temp = prev.slice();
-					temp[letterArray.indexOf(key)] = "";
-					return temp;
-				});
-			}
+			if (letterArray.includes(key)) add(key);
 		},
 		[letterArray, setLetterArray, setInputArray]
 	);
@@ -187,38 +195,8 @@ const About: NextPage = () => {
 					))}
 				</HStack>
 				<HStack>
-					<Button
-						onClick={() => {
-							setInputArray(() => new Array(6).fill(""));
-							setLetterArray(() =>
-								randomWord.sort(() => {
-									return 0.5 - Math.random();
-								})
-							);
-						}}>
-						Shuffle
-					</Button>
-					<Button
-						disabled={!isActive || inputArray.join("").length < 3}
-						onClick={async () => {
-							const finalWord = inputArray.join("");
-							const result = await isWord(finalWord);
-							if (result && !foundArray.includes(finalWord)) {
-								setPoints(points + 100 * Math.pow(2, finalWord.length - 3));
-								setFoundArray((prev) => {
-									prev.push(finalWord);
-									return prev;
-								});
-								toast(
-									`${finalWord} (+${100 * Math.pow(2, finalWord.length - 3)})`,
-									"success"
-								);
-							} else if (foundArray.includes(finalWord))
-								toast("Word already found.", "warning");
-							else toast("Invalid word.", "error");
-							setInputArray(() => new Array(6).fill(""));
-							setLetterArray(() => randomWord);
-						}}>
+					<Button onClick={shuffle}>Shuffle</Button>
+					<Button disabled={!isActive || inputArray.join("").length < 3} onClick={submit}>
 						Submit
 					</Button>
 				</HStack>

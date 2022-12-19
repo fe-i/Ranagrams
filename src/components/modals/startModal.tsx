@@ -26,7 +26,12 @@ const StartModal: React.FC<{
 	isReady: boolean;
 }> = ({ isOpen, onClose, isReady }) => {
 	return (
-		<Modal blockScrollOnMount={true} isOpen={isOpen} onClose={onClose} isCentered>
+		<Modal
+			closeOnOverlayClick={false}
+			blockScrollOnMount={true}
+			isOpen={isOpen}
+			onClose={onClose}
+			isCentered>
 			<ModalOverlay />
 			<ModalContent p={1}>
 				<Tabs variant="enclosed" isFitted>
