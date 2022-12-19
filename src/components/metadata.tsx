@@ -8,7 +8,10 @@ const Metadata: React.FC<{ title?: string }> = ({ title }) => {
 			<meta property="og:type" content="website" />
 			<meta property="og:url" content="" />
 			<meta property="og:image" content="steak.png" />
-			<meta property="og:description" content="Anagrams made using Next.js and Chakra-UI" />
+			<meta
+				property="og:description"
+				content="Anagrams game made with Next.js and Chakra-UI"
+			/>
 		</Head>
 	);
 };
