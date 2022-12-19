@@ -12,7 +12,7 @@ import useRandomWord from "../../hooks/useRandomWord";
 import useTimer from "../../hooks/useTimer";
 import useKeyboard from "../../hooks/useKeyboard";
 
-const About: NextPage = () => {
+const Singleplayer: NextPage = () => {
 	const { randomWord, hasWord, getRandomWord } = useRandomWord();
 	const { isWord } = useIsWord();
 	const {
@@ -39,30 +39,30 @@ const About: NextPage = () => {
 			isClosable: true
 		});
 
-	const add = (key: string) => {
+	const add = (i: number) => {
 		setInputArray((prev) => {
 			const temp = prev.slice();
-			temp[temp.indexOf("")] = key;
+			temp[temp.indexOf("")] = letterArray[i];
 			return temp;
 		});
 		setLetterArray((prev) => {
 			const temp = prev.slice();
-			temp[letterArray.indexOf(key)] = "";
+			temp[i] = "";
 			return temp;
 		});
 	};
 
-	const erase = () => {
-		const temp = inputArray.filter((letter) => letter !== "");
-		const value = temp[temp.length - 1];
+	const remove = (i: number) => {
 		setInputArray((prev) => {
 			const temp = prev.slice();
-			temp[temp.lastIndexOf(value)] = "";
-			return temp;
+			temp.splice(i, 1);
+			console.log([...temp, ""]);
+			return [...temp, ""];
 		});
 		setLetterArray((prev) => {
 			const temp = prev.slice();
-			temp[temp.indexOf("")] = value;
+			temp[temp.indexOf("")] = inputArray[i];
+			console.log(temp);
 			return temp;
 		});
 	};
@@ -79,13 +79,14 @@ const About: NextPage = () => {
 	const submit = async () => {
 		const finalWord = inputArray.join("");
 		const result = await isWord(finalWord);
+		const score = 100 * Math.pow(2, finalWord.length - 2);
 		if (result && !foundArray.includes(finalWord)) {
-			setPoints(points + 100 * Math.pow(2, finalWord.length - 3));
+			setPoints(points + score);
 			setFoundArray((prev) => {
 				prev.push(finalWord);
 				return prev;
 			});
-			toast(`${finalWord} (+${100 * Math.pow(2, finalWord.length - 3)})`, "success");
+			toast(`${finalWord} (+${score.toLocaleString()})`, "success");
 		} else if (foundArray.includes(finalWord)) toast("Word already found.", "warning");
 		else toast("Invalid word.", "error");
 		setInputArray(() => new Array(6).fill(""));
@@ -99,12 +100,13 @@ const About: NextPage = () => {
 	useKeyboard(
 		async (e) => {
 			if (!isActive && time !== 60) return;
-			if (e.code === "Backspace" && inputArray[0] !== "") erase();
-			if (e.code === "Enter" && inputArray.join("").length >= 3) submit();
+			if (e.code === "Backspace" && !!inputArray[0])
+				remove(inputArray.filter((letter) => !!letter).length - 1);
+			if (e.code === "Enter" && inputArray.filter((letter) => !!letter).length >= 3) submit();
 			if (e.code === "Slash") shuffle();
 			if (!e.code.startsWith("Key")) return;
 			const key = e.code.split("Key")[1]?.toLowerCase();
-			if (letterArray.includes(key)) add(key);
+			if (letterArray.includes(key)) add(letterArray.indexOf(key));
 		},
 		[letterArray, setLetterArray, setInputArray]
 	);
@@ -147,7 +149,7 @@ const About: NextPage = () => {
 				<Button onClick={WBonOpen}>Show Found Words</Button>
 				<HStack>
 					<MdListAlt />
-					<Text>{points}</Text>
+					<Text>{points.toLocaleString()} pts</Text>
 					<MdOutlineTimer />
 					<Text>{time}s</Text>
 				</HStack>
@@ -155,20 +157,9 @@ const About: NextPage = () => {
 					{inputArray.map((_, i) => (
 						<LetterButton
 							key={i}
-							letter={inputArray[i]}
-							disabled={inputArray[i] === ""}
-							onClick={() => {
-								setInputArray((prev) => {
-									const temp = prev.slice();
-									temp.splice(i, 1);
-									return [...temp, ""];
-								});
-								setLetterArray((prev) => {
-									const temp = prev.slice();
-									temp[temp.indexOf("")] = inputArray[i];
-									return temp;
-								});
-							}}
+							letter={_}
+							disabled={_ === ""}
+							onClick={() => remove(i)}
 						/>
 					))}
 				</HStack>
@@ -177,26 +168,17 @@ const About: NextPage = () => {
 					{letterArray.map((_, i) => (
 						<LetterButton
 							key={i}
-							letter={letterArray[i]}
-							disabled={letterArray[i] === ""}
-							onClick={() => {
-								setInputArray((prev) => {
-									const temp = prev.slice();
-									temp[temp.indexOf("")] = letterArray[i];
-									return temp;
-								});
-								setLetterArray((prev) => {
-									const temp = prev.slice();
-									temp[i] = "";
-									return temp;
-								});
-							}}
+							letter={_}
+							disabled={_ === ""}
+							onClick={() => add(i)}
 						/>
 					))}
 				</HStack>
 				<HStack>
 					<Button onClick={shuffle}>Shuffle</Button>
-					<Button disabled={!isActive || inputArray.join("").length < 3} onClick={submit}>
+					<Button
+						disabled={!isActive || inputArray.filter((letter) => !!letter).length < 3}
+						onClick={submit}>
 						Submit
 					</Button>
 				</HStack>
@@ -205,4 +187,4 @@ const About: NextPage = () => {
 	);
 };
 
-export default About;
+export default Singleplayer;

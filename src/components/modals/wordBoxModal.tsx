@@ -35,7 +35,7 @@ const WordBoxModal: React.FC<{ isOpen: boolean; onClose: () => void; words: stri
 								.sort((a, b) => a.localeCompare(b) && b.length - a.length)
 								.map((_, i) => (
 									<ListItem key={i}>
-										{_} (+{100 * Math.pow(2, _.length - 3)})
+										{_} (+{(100 * Math.pow(2, _.length - 2)).toLocaleString()})
 									</ListItem>
 								))}
 						</UnorderedList>

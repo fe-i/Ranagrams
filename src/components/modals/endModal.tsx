@@ -39,7 +39,7 @@ const EndModal: React.FC<
 				</ModalHeader>
 				<ModalBody fontSize="xl" py={0}>
 					<UnorderedList mb={3}>
-						<ListItem>Score: {score}</ListItem>
+						<ListItem>Score: {score.toLocaleString()}</ListItem>
 						<ListItem>Words Found: {words.length}</ListItem>
 					</UnorderedList>
 					<Text>

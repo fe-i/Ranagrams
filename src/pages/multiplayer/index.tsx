@@ -1,15 +1,18 @@
-import { Box } from "@chakra-ui/react";
+import { Box, Button } from "@chakra-ui/react";
 import { NextPage } from "next";
+import Link from "next/link";
 import Layout from "../../components/layout";
 
-const About: NextPage = () => {
+const Multiplayer: NextPage = () => {
 	return (
-		<Layout title="Singleplayer">
+		<Layout title="Multiplayer">
 			<Box textAlign="center" py={10} px={6}>
-				Here
+				<Link href="/singleplayer">
+					<Button colorScheme="green">Play Singleplayer</Button>
+				</Link>
 			</Box>
 		</Layout>
 	);
 };
 
-export default About;
+export default Multiplayer;

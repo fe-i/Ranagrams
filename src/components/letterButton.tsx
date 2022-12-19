@@ -3,7 +3,7 @@ import { Button } from "@chakra-ui/react";
 const LetterButton: React.FC<{
 	letter: string;
 	disabled: boolean;
-	onClick?: React.MouseEventHandler<HTMLButtonElement>;
+	onClick: React.MouseEventHandler<HTMLButtonElement>;
 }> = ({ letter, disabled, onClick }) => {
 	return (
 		<Button
