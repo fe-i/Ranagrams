@@ -56,13 +56,11 @@ const Singleplayer: NextPage = () => {
 		setInputArray((prev) => {
 			const temp = prev.slice();
 			temp.splice(i, 1);
-			console.log([...temp, ""]);
 			return [...temp, ""];
 		});
 		setLetterArray((prev) => {
 			const temp = prev.slice();
 			temp[temp.indexOf("")] = inputArray[i];
-			console.log(temp);
 			return temp;
 		});
 	};
@@ -99,7 +97,7 @@ const Singleplayer: NextPage = () => {
 
 	useKeyboard(
 		async (e) => {
-			if (!isActive && time !== 60) return;
+			if (!isActive) return;
 			if (e.code === "Backspace" && !!inputArray[0])
 				remove(inputArray.filter((letter) => !!letter).length - 1);
 			if (e.code === "Enter" && inputArray.filter((letter) => !!letter).length >= 3) submit();
