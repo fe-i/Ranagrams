@@ -18,9 +18,7 @@ const useRandomWord = () => {
 			);
 			setHasWord(() => !hasWord);
 		} else getRandomWord();*/
-		const word = await fetch("https://ranagrams.vercel.app/api/words/randomWord").then((res) =>
-			res.text()
-		);
+		const word = await fetch("api/words/randomWord").then((res) => res.text());
 		setRandomWord(() =>
 			word.split("").sort(() => {
 				return 0.5 - Math.random();
