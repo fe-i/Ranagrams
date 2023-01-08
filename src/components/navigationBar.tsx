@@ -1,53 +1,30 @@
-import {
-	Box,
-	Flex,
-	Link,
-	Heading,
-	Button,
-	useColorModeValue,
-	useColorMode,
-	HStack,
-	useDisclosure
-} from "@chakra-ui/react";
-import { MoonIcon, SunIcon, QuestionIcon, QuestionOutlineIcon } from "@chakra-ui/icons";
+import { Flex, Heading, Image, Button, useDisclosure } from "@chakra-ui/react";
+import { QuestionOutlineIcon } from "@chakra-ui/icons";
+import Link from "next/link";
 import HelpModal from "./modals/helpModal";
 
 const NavigationBar: React.FC = () => {
-	const { colorMode, toggleColorMode } = useColorMode();
 	const { isOpen, onOpen, onClose } = useDisclosure();
 
 	return (
-		<Box bg={useColorModeValue("gray.100", "gray.900")} px={8} py={4} w="100%">
+		<Flex alignItems="center" justifyContent="space-between" p={5} shadow="md">
 			<HelpModal isOpen={isOpen} onClose={onClose} />
-			<Flex alignItems="center" justifyContent="space-between">
-				<Link href="/">
+			<Link href="/" title="Home">
+				<Flex alignItems="center">
+					<Image w={12} alt="Logo" src="/logo.png" />
 					<Heading
-						py={1}
+						pb={1}
 						display="inline-block"
-						fontSize="35px"
 						bgGradient="linear(to-r, blue.400, blue.600)"
 						backgroundClip="text">
-						Ranagrams
+						anagrams
 					</Heading>
-				</Link>
-				<HStack>
-					<Button onClick={onOpen} w="3rem" h="3rem">
-						{colorMode === "light" ? (
-							<QuestionOutlineIcon w="1.5rem" h="1.5rem" />
-						) : (
-							<QuestionIcon w="1.5rem" h="1.5rem" />
-						)}
-					</Button>
-					<Button onClick={toggleColorMode} w="3rem" h="3rem">
-						{colorMode === "light" ? (
-							<MoonIcon w="1.5rem" h="1.5rem" />
-						) : (
-							<SunIcon w="1.5rem" h="1.5rem" />
-						)}
-					</Button>
-				</HStack>
-			</Flex>
-		</Box>
+				</Flex>
+			</Link>
+			<Button onClick={onOpen} w="3rem" h="3rem" variant="ghost">
+				<QuestionOutlineIcon w="1.5rem" h="1.5rem" />
+			</Button>
+		</Flex>
 	);
 };
 

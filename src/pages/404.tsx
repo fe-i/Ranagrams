@@ -1,42 +1,43 @@
-import { Flex, Text, Link, HStack } from "@chakra-ui/react";
-import Layout from "../components/layout";
+import { Button, Flex, Heading, Text, HStack } from "@chakra-ui/react";
+import { NextPage } from "next";
+import Link from "next/link";
+import Layout from "../../src/components/layout";
 import LetterBox from "../components/letterBox";
 
-export default function NotFound() {
+const NotFound: NextPage = () => {
 	return (
 		<Layout title="Not Found">
 			<Flex
-				alignItems="center"
-				justifyContent="center"
-				textAlign="center"
 				flexDir="column"
-				h="100%"
-				px={8}>
-				<HStack spacing={5}>
+				align="center"
+				justify="center"
+				textAlign="center"
+				gap={5}
+				px={8}
+				py={{ base: 180, md: 200 }}>
+				<Flex gap={4}>
 					{"404".split("").map((_, i) => (
 						<LetterBox key={i} color="red.400" size="5rem" letter={_} />
 					))}
-				</HStack>
-				<Text fontSize="30px" mt={3} mb={2}>
+				</Flex>
+				<Heading
+					fontFamily="mono"
+					fontWeight={600}
+					fontSize={{ base: "4xl", md: "6xl" }}
+					lineHeight="110%">
 					Page Not Found
-				</Text>
-				<Text color="gray.500" fontSize="xl" mb={6}>
+				</Heading>
+				<Text color="gray.500" fontSize="lg">
 					The page you&apos;re looking for does not seem to exist.
 				</Text>
-				<Link
-					href="/"
-					px={20}
-					py={2.5}
-					borderRadius={15}
-					fontSize="xl"
-					bgGradient="linear(to-r, blue.300, blue.500)"
-					color="white"
-					_hover={{
-						bgGradient: "linear(to-r, blue.400, blue.600)"
-					}}>
-					Go to Home
-				</Link>
+				<Flex gap={2}>
+					<Button as={Link} href="/" title="Home" borderRadius={10} size="lg">
+						Return Home
+					</Button>
+				</Flex>
 			</Flex>
 		</Layout>
 	);
-}
+};
+
+export default NotFound;

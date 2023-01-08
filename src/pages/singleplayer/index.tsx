@@ -135,23 +135,15 @@ const Singleplayer: NextPage = () => {
 				}}
 			/>
 			<WordBoxModal isOpen={WBisOpen} onClose={WBonClose} words={foundArray} />
-			<Flex
-				alignItems="center"
-				justifyContent="center"
-				textAlign="center"
-				flexDir="column"
-				fontSize="xl"
-				gap="1rem"
-				h="100%"
-				px={8}>
+			<Flex flexDir="column" align="center" justify="center" fontSize="xl" p={6} gap={10}>
 				<Button onClick={WBonOpen}>Show Found Words</Button>
-				<HStack>
+				<Flex flexDir="row" align="center" gap={2}>
 					<MdListAlt />
 					<Text>{points.toLocaleString()} pts</Text>
 					<MdOutlineTimer />
 					<Text>{time}s</Text>
-				</HStack>
-				<HStack>
+				</Flex>
+				<Flex flexDir="row" gap={2}>
 					{inputArray.map((_, i) => (
 						<LetterButton
 							key={i}
@@ -160,9 +152,9 @@ const Singleplayer: NextPage = () => {
 							onClick={() => remove(i)}
 						/>
 					))}
-				</HStack>
-				<Divider bg="black" h="0.1rem" />
-				<HStack>
+				</Flex>
+				<Divider bg="black" w={{ base: "20rem", md: "40rem" }} h="0.1rem" />
+				<Flex flexDir="row" gap={2}>
 					{letterArray.map((_, i) => (
 						<LetterButton
 							key={i}
@@ -171,15 +163,15 @@ const Singleplayer: NextPage = () => {
 							onClick={() => add(i)}
 						/>
 					))}
-				</HStack>
-				<HStack>
+				</Flex>
+				<Flex flexDir="row" gap={2}>
 					<Button onClick={shuffle}>Shuffle</Button>
 					<Button
 						disabled={!isActive || inputArray.filter((letter) => !!letter).length < 3}
 						onClick={submit}>
 						Submit
 					</Button>
-				</HStack>
+				</Flex>
 			</Flex>
 		</Layout>
 	);
