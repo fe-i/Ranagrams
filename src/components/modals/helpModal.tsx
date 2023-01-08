@@ -6,6 +6,7 @@ import {
 	ModalCloseButton,
 	ModalFooter,
 	ModalBody,
+	Flex,
 	Tabs,
 	TabList,
 	Tab,
@@ -14,10 +15,8 @@ import {
 	Text,
 	UnorderedList,
 	ListItem,
-	HStack,
 	Divider,
-	Kbd,
-	VStack
+	Kbd
 } from "@chakra-ui/react";
 import Link from "next/link";
 import { BsGithub } from "react-icons/bs";
@@ -52,20 +51,20 @@ const HelpModal: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ isOpen,
 								<Text fontSize="lg" fontWeight="semibold" textDecor="underline">
 									Example
 								</Text>
-								<HStack>
+								<Flex flexDir="row" gap={4}>
 									{"melons".split("").map((_, i) => (
 										<LetterBox color="green.300" key={i} letter={_} />
 									))}
-								</HStack>
+								</Flex>
 								<Text fontSize="lg">can be rearranged into...</Text>
-								<HStack>
+								<Flex flexDir="row" gap={4}>
 									{"lemons".split("").map((_, i) => (
 										<LetterBox color="yellow.200" key={i} letter={_} />
 									))}
-								</HStack>
+								</Flex>
 							</TabPanel>
 							<TabPanel>
-								<VStack alignItems="flex-start" gap={5} fontSize="lg">
+								<Flex flexDir="column" fontSize="lg" gap={5}>
 									<Text>
 										<Kbd>A</Kbd> <Kbd>B</Kbd> <Kbd>C</Kbd> Add letter to word
 										builder
@@ -79,7 +78,7 @@ const HelpModal: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ isOpen,
 									<Text>
 										<Kbd>/</Kbd> Shuffle the letter array
 									</Text>
-								</VStack>
+								</Flex>
 							</TabPanel>
 						</TabPanels>
 					</Tabs>
@@ -87,10 +86,10 @@ const HelpModal: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ isOpen,
 				</ModalBody>
 				<ModalFooter justifyContent="left" display="inline">
 					<Link href="https://github.com/fe-i/ranagrams">
-						<HStack>
+						<Flex flexDir="row" gap={2}>
 							<BsGithub size={30} />
 							<Text fontSize="md">Made by fe-i 🥩</Text>
-						</HStack>
+						</Flex>
 					</Link>
 				</ModalFooter>
 			</ModalContent>

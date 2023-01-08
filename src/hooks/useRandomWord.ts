@@ -12,11 +12,7 @@ const useRandomWord = () => {
 	const getRandomWord = async () => {
 		const word = rword.generate(1, { length: 6 });
 		if (await isWord(word)) {
-			setRandomWord(() =>
-				word.split("").sort(() => {
-					return 0.5 - Math.random();
-				})
-			);
+			setRandomWord(() => word.split("").sort(() => 0.5 - Math.random()));
 			setHasWord(() => !hasWord);
 		} else getRandomWord();
 	};

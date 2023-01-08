@@ -9,9 +9,7 @@ import {
 	Text,
 	UnorderedList,
 	ListItem,
-	Link,
-	Button,
-	HStack
+	Button
 } from "@chakra-ui/react";
 
 const EndModal: React.FC<
@@ -19,10 +17,9 @@ const EndModal: React.FC<
 		isOpen: boolean;
 		words: any;
 		score: number;
-		wordBoxOpen: MouseEventHandler<HTMLAnchorElement>;
-		startOpen: MouseEventHandler<HTMLButtonElement>;
+		wordBoxOpen: MouseEventHandler<HTMLButtonElement>;
 	}>
-> = ({ isOpen, words, score, wordBoxOpen, startOpen }) => {
+> = ({ isOpen, words, score, wordBoxOpen }) => {
 	return (
 		<Modal
 			closeOnOverlayClick={false}
@@ -42,23 +39,15 @@ const EndModal: React.FC<
 						<ListItem>Score: {score.toLocaleString()}</ListItem>
 						<ListItem>Words Found: {words.length}</ListItem>
 					</UnorderedList>
-					<Text>
-						Click{" "}
-						<Link fontWeight="bold" onClick={wordBoxOpen}>
-							here
-						</Link>{" "}
-						to view the words that you found.
-					</Text>
 				</ModalBody>
-				<ModalFooter>
-					<HStack>
-						<Link href="/singleplayer">
-							<Button colorScheme="green">Play Again (reload)</Button>
-						</Link>
-						<Button colorScheme="green" onClick={startOpen}>
-							Play Again
-						</Button>
-					</HStack>
+				<ModalFooter gap={2}>
+					<Button onClick={wordBoxOpen}>View Words</Button>
+					<Button
+						title="Play Again"
+						colorScheme="green"
+						onClick={() => window.location.reload()}>
+						Play Again
+					</Button>
 				</ModalFooter>
 			</ModalContent>
 		</Modal>

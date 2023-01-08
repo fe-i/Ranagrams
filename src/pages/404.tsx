@@ -1,4 +1,4 @@
-import { Button, Flex, Heading, Text, HStack } from "@chakra-ui/react";
+import { Button, Flex, Heading, Text } from "@chakra-ui/react";
 import { NextPage } from "next";
 import Link from "next/link";
 import Layout from "../../src/components/layout";
@@ -30,11 +30,9 @@ const NotFound: NextPage = () => {
 				<Text color="gray.500" fontSize="lg">
 					The page you&apos;re looking for does not seem to exist.
 				</Text>
-				<Flex gap={2}>
-					<Button as={Link} href="/" title="Home" borderRadius={10} size="lg">
-						Return Home
-					</Button>
-				</Flex>
+				<Button as={Link} href="/" title="Home" borderRadius={10} size="lg">
+					Return Home
+				</Button>
 			</Flex>
 		</Layout>
 	);

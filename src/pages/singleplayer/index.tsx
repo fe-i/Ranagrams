@@ -1,4 +1,4 @@
-import { Flex, Text, Button, HStack, Divider, useDisclosure, useToast } from "@chakra-ui/react";
+import { Flex, Text, Button, Divider, useDisclosure, useToast } from "@chakra-ui/react";
 import { NextPage } from "next";
 import { useEffect, useState } from "react";
 import { MdListAlt, MdOutlineTimer } from "react-icons/md";
@@ -15,16 +15,10 @@ import useKeyboard from "../../hooks/useKeyboard";
 const Singleplayer: NextPage = () => {
 	const { randomWord, hasWord, getRandomWord } = useRandomWord();
 	const { isWord } = useIsWord();
-	const {
-		isOpen: SisOpen,
-		onOpen: SonOpen,
-		onClose: SonClose
-	} = useDisclosure({
-		defaultIsOpen: true
-	});
+	const { isOpen: SisOpen, onClose: SonClose } = useDisclosure({ defaultIsOpen: true });
 	const { isOpen: WBisOpen, onOpen: WBonOpen, onClose: WBonClose } = useDisclosure();
 	const [points, setPoints] = useState(0);
-	const { time, isActive, resetTimer, toggleTimer } = useTimer(60);
+	const { time, isActive, toggleTimer } = useTimer(3);
 	const [inputArray, setInputArray] = useState(new Array(6).fill(""));
 	const [letterArray, setLetterArray] = useState(randomWord);
 	const [foundArray, setFoundArray] = useState(new Array());
@@ -67,11 +61,7 @@ const Singleplayer: NextPage = () => {
 
 	const shuffle = () => {
 		setInputArray(() => new Array(6).fill(""));
-		setLetterArray(() =>
-			randomWord.sort(() => {
-				return 0.5 - Math.random();
-			})
-		);
+		setLetterArray(() => randomWord.sort(() => 0.5 - Math.random()));
 	};
 
 	const submit = async () => {
@@ -114,11 +104,7 @@ const Singleplayer: NextPage = () => {
 			<StartModal
 				isOpen={SisOpen}
 				onClose={() => {
-					setPoints(0);
-					setInputArray(() => new Array(6).fill(""));
 					setLetterArray(() => randomWord);
-					setFoundArray(() => new Array());
-					resetTimer();
 					toggleTimer();
 					SonClose();
 				}}
@@ -129,10 +115,6 @@ const Singleplayer: NextPage = () => {
 				words={foundArray}
 				score={points}
 				wordBoxOpen={WBonOpen} //TODO: CLOSE WORDBOX MODAL BEFORE POPUP APPEARS OR MAKE IT IN FRONT
-				startOpen={() => {
-					getRandomWord();
-					SonOpen();
-				}}
 			/>
 			<WordBoxModal isOpen={WBisOpen} onClose={WBonClose} words={foundArray} />
 			<Flex flexDir="column" align="center" justify="center" fontSize="xl" p={6} gap={10}>
