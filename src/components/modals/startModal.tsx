@@ -81,19 +81,15 @@ const StartModal: React.FC<{
 						</TabPanel>
 					</TabPanels>
 				</Tabs>
-				{isReady ? (
-					<Button colorScheme="green" onClick={onClose}>
-						Click To Start
-					</Button>
-				) : (
-					<Button
-						isLoading
-						loadingText="Loading"
-						colorScheme="green"
-						variant="outline"
-						spinnerPlacement="start"
-					/>
-				)}
+				<Button
+					colorScheme="green"
+					onClick={onClose}
+					isLoading={!isReady}
+					loadingText="Loading"
+					variant={isReady ? "solid" : "outline"}
+					spinnerPlacement="start">
+					Click To Start
+				</Button>
 			</ModalContent>
 		</Modal>
 	);
