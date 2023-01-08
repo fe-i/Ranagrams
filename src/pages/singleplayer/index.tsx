@@ -16,9 +16,10 @@ const Singleplayer: NextPage = () => {
 	const { randomWord, hasWord, getRandomWord } = useRandomWord();
 	const { isWord } = useIsWord();
 	const { isOpen: SisOpen, onClose: SonClose } = useDisclosure({ defaultIsOpen: true });
+	const { isOpen: EisOpen, onOpen: EonOpen } = useDisclosure();
 	const { isOpen: WBisOpen, onOpen: WBonOpen, onClose: WBonClose } = useDisclosure();
 	const [points, setPoints] = useState(0);
-	const { time, isActive, toggleTimer } = useTimer(3);
+	const { time, isActive, toggleTimer } = useTimer(60);
 	const [inputArray, setInputArray] = useState(new Array(6).fill(""));
 	const [letterArray, setLetterArray] = useState(randomWord);
 	const [foundArray, setFoundArray] = useState(new Array());
@@ -83,7 +84,11 @@ const Singleplayer: NextPage = () => {
 
 	useEffect(() => {
 		getRandomWord();
-	}, []);
+		if (!isActive && time === 0) {
+			WBonClose();
+			EonOpen();
+		}
+	}, [isActive, WBonClose, EonOpen]);
 
 	useKeyboard(
 		async (e) => {
@@ -110,12 +115,7 @@ const Singleplayer: NextPage = () => {
 				}}
 				isReady={hasWord}
 			/>
-			<EndModal
-				isOpen={!isActive && time === 0}
-				words={foundArray}
-				score={points}
-				wordBoxOpen={WBonOpen} //TODO: CLOSE WORDBOX MODAL BEFORE POPUP APPEARS OR MAKE IT IN FRONT
-			/>
+			<EndModal isOpen={EisOpen} words={foundArray} score={points} wordBoxOpen={WBonOpen} />
 			<WordBoxModal isOpen={WBisOpen} onClose={WBonClose} words={foundArray} />
 			<Flex flexDir="column" align="center" justify="center" fontSize="xl" p={6} gap={10}>
 				<Button onClick={WBonOpen}>Show Found Words</Button>
