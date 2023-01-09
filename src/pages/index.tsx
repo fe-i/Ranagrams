@@ -13,7 +13,7 @@ const Home: NextPage = () => {
 				textAlign="center"
 				gap={5}
 				px={8}
-				py={{ base: "30vh", md: "40vh" }}>
+				py={{ base: "30vh", md: "35vh" }}>
 				<Heading
 					fontFamily="mono"
 					fontWeight={600}
@@ -24,10 +24,10 @@ const Home: NextPage = () => {
 					Make some words!
 				</Heading>
 				<Flex gap={2}>
-					<Button as={Link} href="/singleplayer" title="Singleplayer" borderRadius={10}>
+					<Button as={Link} href="/singleplayer" title="Singleplayer">
 						Singleplayer
 					</Button>
-					<Button as={Link} href="/multiplayer" title="Multiplayer" borderRadius={10}>
+					<Button as={Link} href="/multiplayer" title="Multiplayer">
 						Multiplayer (WIP)
 					</Button>
 				</Flex>

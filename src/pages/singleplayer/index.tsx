@@ -126,7 +126,7 @@ const Singleplayer: NextPage = () => {
 				justify="center"
 				fontSize="xl"
 				px={6}
-				py={100}
+				py={{ base: "15vh", md: "12vh" }}
 				gap={5}>
 				<Button onClick={WBonOpen}>Show Found Words</Button>
 				<Flex flexDir="row" align="center" gap={2}>
