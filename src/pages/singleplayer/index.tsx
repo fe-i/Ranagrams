@@ -84,6 +84,9 @@ const Singleplayer: NextPage = () => {
 
 	useEffect(() => {
 		getRandomWord();
+	}, []);
+
+	useEffect(() => {
 		if (!isActive && time === 0) {
 			WBonClose();
 			EonOpen();
@@ -117,7 +120,14 @@ const Singleplayer: NextPage = () => {
 			/>
 			<EndModal isOpen={EisOpen} words={foundArray} score={points} wordBoxOpen={WBonOpen} />
 			<WordBoxModal isOpen={WBisOpen} onClose={WBonClose} words={foundArray} />
-			<Flex flexDir="column" align="center" justify="center" fontSize="xl" p={6} gap={10}>
+			<Flex
+				flexDir="column"
+				align="center"
+				justify="center"
+				fontSize="xl"
+				px={6}
+				py={100}
+				gap={5}>
 				<Button onClick={WBonOpen}>Show Found Words</Button>
 				<Flex flexDir="row" align="center" gap={2}>
 					<MdListAlt />
