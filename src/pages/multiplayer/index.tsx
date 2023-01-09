@@ -9,11 +9,11 @@ const Multiplayer: NextPage = () => {
 				flexDir="column"
 				align="center"
 				justify="center"
-				textAlign="center"
-				gap={5}
-				px={8}
-				py={{ base: 180, md: 200 }}>
-				<Text>WIP</Text>
+				fontSize="xl"
+				px={6}
+				py={{ base: "22vh", md: "18vh" }}
+				gap={5}>
+				<Text>Work In Progress</Text>
 			</Flex>
 		</Layout>
 	);
