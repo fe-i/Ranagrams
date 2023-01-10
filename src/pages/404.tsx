@@ -14,7 +14,7 @@ const NotFound: NextPage = () => {
 				textAlign="center"
 				gap={5}
 				px={8}
-				py={{ base: 180, md: 200 }}>
+				py="32vh">
 				<Flex gap={4}>
 					{"404".split("").map((_, i) => (
 						<LetterBox key={i} color="red.400" size="5rem" letter={_} />
