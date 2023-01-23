@@ -23,14 +23,9 @@ const Home: NextPage = () => {
 					<br />
 					Make some words!
 				</Heading>
-				<Flex gap={2}>
-					<Button as={Link} href="/singleplayer" title="Singleplayer">
-						Singleplayer
-					</Button>
-					<Button as={Link} href="/multiplayer" title="Multiplayer">
-						Multiplayer (WIP)
-					</Button>
-				</Flex>
+				<Button as={Link} href="/play" title="Play Now" size="lg">
+					Play Now
+				</Button>
 			</Flex>
 		</Layout>
 	);
