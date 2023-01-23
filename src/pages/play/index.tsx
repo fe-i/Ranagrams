@@ -108,7 +108,7 @@ const Singleplayer: NextPage = () => {
 	);
 
 	return (
-		<Layout title="Singleplayer">
+		<Layout title="Play">
 			<StartModal
 				isOpen={SisOpen}
 				onClose={() => {
